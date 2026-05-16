@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Surprise 💖</title>
+
+<style>
+   body {
+    margin:0;
+    font-family: Arial;
+    text-align:center;
+    background: radial-gradient(circle at top,#ffe6f0,#ffcce6,#ffb3d9);
+    overflow:hidden;
+    color:#333;
+}
+ /* 🌸 Floating Flowers */
+.flower {
+    position: fixed;
+    pointer-events: none;
+    animation: flowerFloat linear infinite;
+    opacity: 0.8;
+}
+
+@keyframes flowerFloat {
+    from {
+        transform: translateY(100vh) rotate(0deg);
+    }
+    to {
+        transform: translateY(-10vh) rotate(360deg);
+    }
+}
+
+/* ✨ Cursor flowers */
+.cursor-flower {
+    position: fixed;
+    pointer-events: none;
+    animation: fadeOut 1s linear forwards;
+}
+
+@keyframes fadeOut {
+    to {
+        opacity:0;
+        transform: scale(1.5);
+    }
+}
+
+/* Glow text */
+h2 {
+    animation: glow 2s ease-in-out infinite alternate;
+}
+@keyframes glow {
+    from { text-shadow:0 0 10px pink; }
+    to { text-shadow:0 0 25px deeppink; }
+}
+
+/* Sparkles */
+.sparkle {
+    position:fixed;
+    width:6px;
+    height:6px;
+    background:white;
+    border-radius:50%;
+    animation: float 6s linear infinite;
+}
+@keyframes float {
+    from { transform: translateY(100vh); }
+    to { transform: translateY(-10vh); }
+}
+
+/* Pages */
+.page {
+    display:none;
+    height:100vh;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    opacity:0;
+    transform: translateX(50px);
+    transition: all 0.6s ease;
+}
+.active {
+    display:flex;
+    opacity:1;
+    transform: translateX(0);
+}
+
+/* Buttons */
+button {
+    padding:12px 25px;
+    margin:10px;
+    border:none;
+    border-radius:20px;
+    background:hotpink;
+    color:white;
+    cursor:pointer;
+    transition:0.3s;
+    box-shadow:0 0 10px pink;
+}
+button:hover {
+    transform: scale(1.1);
+    box-shadow:0 0 25px deeppink;
+}
+
+/* Layout */
+.row {
+    display:flex;
+    align-items:center;
+    gap:40px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+.row img {
+    width:250px;
+    border-radius:15px;
+    box-shadow:0 0 15px pink;
+}
+.text {
+    width:300px;
+    font-size:18px;
+}
+
+/* Typing */
+.typing {
+    border-right:3px solid hotpink;
+    white-space:normal;
+    overflow:hidden;
+}
+
+/* Slideshow */
+#slideImg {
+    width:300px;
+    border-radius:20px;
+    box-shadow:0 0 20px hotpink;
+}
+
+/* Floating hearts */
+.heart {
+    position:fixed;
+    color:pink;
+    font-size:18px;
+    animation: rise 4s linear forwards;
+}
+@keyframes rise {
+    from { transform: translateY(100vh); opacity:1; }
+    to { transform: translateY(-10vh); opacity:0; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- MUSIC -->
+<audio id="music" src="music.mp3.mpeg" loop></audio>
+
+<!-- Sparkles -->
+<script>
+/* 🌸 FLOWER BACKGROUND */
+let flowers = ["🌸","🌼","🌷","🌺","💮"];
+
+for(let i=0;i<40;i++){
+    let f = document.createElement("div");
+    f.className = "flower";
+    f.innerHTML = flowers[Math.floor(Math.random()*flowers.length)];
+
+    f.style.left = Math.random()*100 + "vw";
+    f.style.fontSize = (15 + Math.random()*20) + "px";
+    f.style.animationDuration = (5 + Math.random()*5) + "s";
+
+    document.body.appendChild(f);
+}
+
+/* 🖱️ FLOWERS FOLLOW CURSOR */
+document.addEventListener("mousemove", function(e){
+    let f = document.createElement("div");
+    f.className = "cursor-flower";
+    f.innerHTML = flowers[Math.floor(Math.random()*flowers.length)];
+
+    f.style.left = e.clientX + "px";
+    f.style.top = e.clientY + "px";
+    f.style.fontSize = "16px";
+
+    document.body.appendChild(f);
+
+    setTimeout(()=> f.remove(),1000);
+});
+
+/* 💥 CLICK FLOWER BURST */
+document.addEventListener("click", function(e){
+    for(let i=0;i<10;i++){
+        let f = document.createElement("div");
+        f.className = "cursor-flower";
+        f.innerHTML = flowers[Math.floor(Math.random()*flowers.length)];
+
+        f.style.left = e.clientX + "px";
+        f.style.top = e.clientY + "px";
+
+        let x = (Math.random()*200 - 100);
+        let y = (Math.random()*200 - 100);
+
+        f.style.transform = `translate(${x}px, ${y}px)`;
+
+        document.body.appendChild(f);
+
+        setTimeout(()=> f.remove(),1000);
+    }
+});
+</script>
+
+<!-- PAGE 1 -->
+<div class="page active" id="page1">
+    <h2>Are you ready for the surprise? 💖</h2>
+
+    <button id="yesBtn" onclick="start()">YES</button>
+    <button id="noBtn">NO</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+    <div class="row">
+        <img src="photo1.jpeg">
+        <div class="text typing" id="t1"></div>
+    </div>
+    <button onclick="nextPage()">Next ➡️</button>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page3">
+    <div class="row">
+        <img src="photo2.jpeg">
+        <div class="text typing" id="t2"></div>
+    </div>
+    <button onclick="nextPage()">Next ➡️</button>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" id="page4">
+    <div class="row">
+        <img src="photo3.jpeg">
+        <div class="text typing" id="t3"></div>
+    </div>
+    <button onclick="nextPage()">Next ➡️</button>
+</div>
+
+<!-- PAGE 5 (UNCHANGED BIRTHDAY) -->
+<div class="page" id="page5">
+    <h2>Enter my birthday 🎂</h2>
+    <input id="bday" placeholder="DDMM">
+    <br><br>
+    <button onclick="check()">Submit</button>
+    <p id="msg"></p>
+</div>
+
+<!-- PAGE 6 -->
+<div class="page" id="page6">
+    <h2>Our Memories 📸</h2>
+    <img id="slideImg" src="photo4.jpeg">
+    <br>
+    <button onclick="nextSlide()">Next ➡️</button>
+    <button onclick="nextPage()">Finish 💖</button>
+</div>
+
+<!-- PAGE 7 -->
+<div class="page" id="page7">
+    <h2>💖 Thank You 💖</h2>
+    <p class="typing" id="finalText"></p>
+</div>
+
+<script>
+
+/* TEXT */
+let texts = [
+"You’re literally my favorite human 😭💗 like how did I get so lucky to have a bestie who’s this crazy, annoying, and still somehow the sweetest person ever 🫶😂 We laugh at the dumbest things, fight over nothing, and still can’t go a day without talking 😌💅 You’re my therapist, my partner in crime, and the only one who understands my nonsense without judging 🤡✨ Honestly, life would be so boring without you… so yeah, you’re stuck with me forever 😏💖",
+"You’re my favorite chaos partner ever 😂💗 like we literally laugh over nothing and still somehow understand each other perfectly 🫶✨ but also excuse me??? you NEVER watch the shows I suggest 😤📺 and you still haven’t watched F4 yet like what are you even doing with your life 😭💀 I deserve better as a bestie fr 😌💅 but okay fine I’ll forgive you because you’re still my person and I can’t stay mad at you for more than 2 minutes 🤡💖 just know I’m still judging you until you finally watch it 😏🍿",
+"You’re honestly the only person I can be 100% weird with and not feel judged 😭😂 like we say the dumbest things, laugh at nothing, and still act like it’s the funniest thing ever 🤡💅 You’ve seen me at my worst, my ugliest moods, and my most random moments… and you still stayed 🫶✨ that’s real friendship right there 💖 No matter where life takes us, I know we’ll still be sending each other nonsense at 2am and laughing like idiots 😭💗"
+];
+
+let finalMsg = "Thank you for being there in every moment 🫶✨ Life feels lighter, happier, and way more chaotic (in the best way) with you 💖 You’re not just my best friend… you’re my safe place 😌 So yeah… no escape now, you’re stuck with me forever 😏💗";
+
+/* Typing */
+function typeText(id,text,speed=25){
+    let i=0;
+    let el=document.getElementById(id);
+    el.innerHTML="";
+    let inter=setInterval(()=>{
+        el.innerHTML+=text.charAt(i);
+        i++;
+        if(i>=text.length) clearInterval(inter);
+    },speed);
+}
+
+/* Start */
+function start(){
+    document.getElementById("music").play();
+    nextPage();
+    setTimeout(()=>typeText("t1",texts[0]),500);
+}
+
+/* Navigation */
+let page=1;
+function nextPage(){
+    document.getElementById("page"+page).classList.remove("active");
+    page++;
+    document.getElementById("page"+page).classList.add("active");
+
+    if(page==3) setTimeout(()=>typeText("t2",texts[1]),500);
+    if(page==4) setTimeout(()=>typeText("t3",texts[2]),500);
+    if(page==7){
+        typeText("finalText",finalMsg,30);
+        setInterval(createHeart,300);
+    }
+}
+
+/* NO prank */
+let no = document.getElementById("noBtn");
+let attempts = 0;
+
+let messages = [
+    "No is not an option 😌",
+    "Try again 😏",
+    "You really thought? 😂",
+    "Just press YES 💖",
+    "inka chaaalu yes nokku 🤡"
+];
+
+no.addEventListener("mouseover", escapeNo);
+no.addEventListener("click", escapeNo);
+
+function escapeNo(){
+
+    attempts++;
+
+    let x = Math.random() * (window.innerWidth - 100);
+    let y = Math.random() * (window.innerHeight - 50);
+
+    no.style.position = "absolute";
+    no.style.left = x + "px";
+    no.style.top = y + "px";
+
+    let scale = Math.max(0.5, 1 - attempts * 0.1);
+    no.style.transform = `scale(${scale}) rotate(${attempts * 25}deg)`;
+
+    if(attempts < 5){
+        no.innerText = messages[attempts - 1];
+    }
+
+    if(attempts >= 5){
+        no.innerText = "Fine… YES 💖";
+        no.style.background = "deeppink";
+        no.onclick = function(){
+            start();
+        };
+    }
+}
+
+/* BIRTHDAY (UNCHANGED) */
+function check(){
+    let val=document.getElementById("bday").value;
+    let msg=document.getElementById("msg");
+
+    if(val==="1703"){
+        msg.innerText="Oh wow you actually remembered my birthday!!! 💖";
+        setTimeout(()=>{ nextPage(); },1500);
+    } else {
+        msg.innerText="Siggu ledha!Na birthday kuda gurthu ledhu malli best frndddd";
+    }
+}
+
+/* Slideshow */
+let images=[
+"photo4.jpeg","photo5.jpeg","photo6.jpeg","photo7.jpeg","photo8.jpeg",
+"photo13.jpeg","photo12.jpeg","photo11.jpeg","photo9.jpeg","photo10.jpeg"
+];
+let i=0;
+function nextSlide(){
+    i=(i+1)%images.length;
+    document.getElementById("slideImg").src=images[i];
+}
+
+/* Auto slide */
+setInterval(()=>{
+    if(page==6) nextSlide();
+},3000);
+
+/* Floating hearts */
+function createHeart(){
+    let h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML="💖";
+    h.style.left=Math.random()*100+"vw";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),4000);
+}
+
+</script>
+
+</body>
+</html>
